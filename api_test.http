@@ -1,0 +1,13 @@
+### GET /
+GET http://10.0.26.22/
+
+###
+GET http://10.0.26.22/api/minus
+
+###
+GET http://10.0.26.22/api/plus
+
+###
+GET http://10.0.26.22/api/move!m=1s=1&d=1
+
+###

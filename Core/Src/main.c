@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "lwip/apps/httpd.h"
+#include "../motor/motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -64,6 +65,9 @@ const osThreadAttr_t dhcp_task_attributes = {
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
+extern const char *ssi_tags[];
+// extern const tCGI api_handlers[];
+u16_t ssi_handler(int iIndex, char *pcInsert, int iInsertLen);
 
 /* USER CODE END PV */
 
@@ -429,9 +433,15 @@ void StartDefaultTask(void *argument)
 {
   /* init code for LWIP */
   MX_LWIP_Init();
-
-  httpd_init();
   /* USER CODE BEGIN 5 */
+  httpd_init();
+  //http_set_ssi_handler(ssi_handler, ssi_tags, 1);
+  // http_set_cgi_handlers(api_handlers, 2);
+
+
+  motorQueueHandle = osMessageQueueNew(10, sizeof(MotorCommand_t), NULL);
+  osThreadNew(MotorTask, NULL, &motorTask_attributes);
+
   /* Infinite loop */
   for(;;)
   {
