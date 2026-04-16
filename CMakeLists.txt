@@ -37,8 +37,8 @@ add_executable(${CMAKE_PROJECT_NAME}
         api/handle_api.h
         json/core_json.c
         json/core_json.h
-        Core/motor/motor.c
-        Core/motor/motor.h)
+        motor/stepper.c
+        motor/stepper.h)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)

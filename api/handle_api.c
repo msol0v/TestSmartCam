@@ -6,8 +6,6 @@
 
 #include "fs.h"
 
-#include "../motor/motor.h"
-
 /**
  * Вызывается при получении POST-запроса (начало)
  */
@@ -89,7 +87,6 @@ int fs_open_custom(struct fs_file *file, const char *name) {
     // --- 1. ОБРАБОТКА КОМАНД МОТОРА ---
     // Ожидаем: /api/move?m=1&s=500&d=cw
     if (strstr(name, "api/move")) {
-        MotorCommand_t cmd;
         int m_id_tmp = 0;
         int32_t s_val_tmp = 0;
 
@@ -101,12 +98,8 @@ int fs_open_custom(struct fs_file *file, const char *name) {
             if (sscanf(m_ptr, "m=%d", &m_id_tmp) == 1 &&
                 sscanf(s_ptr, "s=%" SCNd32, &s_val_tmp) == 1) {
 
-                cmd.motor_id = (uint8_t)m_id_tmp;
-                cmd.steps = s_val_tmp;
-                cmd.dir = strstr(name, "d=cw") ? MOTOR_DIR_CW : MOTOR_DIR_CCW;
-
                 // Отправляем в очередь FreeRTOS (без ожидания, чтобы не вешать стек lwIP)
-                osMessageQueuePut(motorQueueHandle, &cmd, 0, 0);
+                //osMessageQueuePut(motorQueueHandle, &cmd, 0, 0);
 
             }
         }
